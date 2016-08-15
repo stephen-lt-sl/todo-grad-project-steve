@@ -28,3 +28,12 @@ h1 {
     background-color: rgba(255, 0, 0, 0.5);
     font-side: 66px;
 }
+
+.completeButton {
+    background-color: rgba(0, 255, 0, 0.5);
+    font-side: 66px;
+}
+
+.completedTodoItem {
+    color: rgba(0, 90, 255, 0.9);
+}

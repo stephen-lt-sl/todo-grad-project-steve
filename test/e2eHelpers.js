@@ -80,7 +80,11 @@ module.exports.addTodo = function(text) {
 };
 
 module.exports.deleteTodo = function(id) {
-    driver.findElement(webdriver.By.css("[data-id='" + id.toString() + "']")).click();
+    driver.findElement(webdriver.By.css("[class=deleteButton][data-id='" + id + "']")).click();
+};
+
+module.exports.completeTodo = function(id) {
+    driver.findElement(webdriver.By.css("[class=completeButton][data-id='" + id + "']")).click();
 };
 
 module.exports.setupErrorRoute = function(action, route) {
@@ -96,6 +100,11 @@ module.exports.setupErrorRoute = function(action, route) {
     }
     if (action === "delete") {
         router.delete(route, function(req, res) {
+            res.sendStatus(500);
+        });
+    }
+    if (action === "put") {
+        router.put(route, function(req, res) {
             res.sendStatus(500);
         });
     }

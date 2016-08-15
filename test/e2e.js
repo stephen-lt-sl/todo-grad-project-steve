@@ -102,4 +102,39 @@ testing.describe("end to end", function() {
             });
         });
     });
+    testing.describe("on complete todo item", function() {
+        testing.it("item remains in list", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("0");
+            });
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+        });
+        testing.it("displays an error if the request fails", function() {
+            helpers.setupErrorRoute("put", "/api/todo/*");
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("0");
+            });
+            helpers.getErrorText().then(function(text) {
+                assert.equal(text, "Failed to complete item. Server returned 500 - Internal Server Error");
+            });
+        });
+        testing.it("changes style of completed list item", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("0");
+            });
+            helpers.getTodoList().then(function(elements) {
+                elements[0].getAttribute("class").then(function(classes) {
+                    assert.isTrue(classes.split(" ").indexOf("completedTodoItem") > -1);
+                });
+            });
+        });
+    });
 });

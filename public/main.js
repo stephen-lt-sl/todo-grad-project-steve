@@ -64,13 +64,19 @@ function reloadTodoList() {
         todoListPlaceholder.style.display = "none";
         todos.forEach(function(todo) {
             var listItem = document.createElement("li");
-            var button = document.createElement("button");
-            button.onclick = function(event) { deleteTodo(todo.id, reloadTodoList); };
-            button.innerHTML = "Delete";
-            button.classList.add("deleteButton");
-            button.setAttribute("data-id", todo.id.toString());
+            var compButton = document.createElement("button");
+            //compButton.onclick = function(event) { deleteTodo(todo.id, reloadTodoList); };
+            compButton.innerHTML = "Complete";
+            compButton.classList.add("completeButton");
+            var delButton = document.createElement("button");
+            delButton.onclick = function(event) { deleteTodo(todo.id, reloadTodoList); };
+            delButton.innerHTML = "Delete";
+            delButton.classList.add("deleteButton");
+            delButton.setAttribute("data-id", todo.id.toString());
             listItem.textContent = todo.title;
-            listItem.appendChild(button);
+            listItem.appendChild(compButton);
+            listItem.appendChild(delButton);
+            //listitem.classList.toggle("completedTodoItem", todo.isComplete);
             todoList.appendChild(listItem);
         });
     });

@@ -70,6 +70,7 @@ describe("server", function() {
                 request.get(todoListUrl, function(error, response, body) {
                     assert.deepEqual(JSON.parse(body), [{
                         title: "This is a TODO item",
+                        isComplete: false,
                         done: false,
                         id: "0"
                     }]);
@@ -174,12 +175,40 @@ describe("server", function() {
                     url: todoListUrl + "/0",
                     json: {
                         title: "This is a new TODO item",
+                        isComplete: true,
                         done: true
                     }
                 }, function() {
                     request.get(todoListUrl, function(error, response, body) {
                         assert.deepEqual(JSON.parse(body), [{
                             title: "This is a new TODO item",
+                            isComplete: true,
+                            done: true,
+                            id: "0"
+                        }]);
+                        done();
+                    });
+                });
+            });
+        });
+        it("only updates the chosen fields", function(done) {
+            request.post({
+                url: todoListUrl,
+                json: {
+                    title: "This is a TODO item",
+                    done: false
+                }
+            }, function() {
+                request.put({
+                    url: todoListUrl + "/0",
+                    json: {
+                        done: true
+                    }
+                }, function() {
+                    request.get(todoListUrl, function(error, response, body) {
+                        assert.deepEqual(JSON.parse(body), [{
+                            title: "This is a TODO item",
+                            isComplete: false,
                             done: true,
                             id: "0"
                         }]);

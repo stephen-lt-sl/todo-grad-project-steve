@@ -19,6 +19,7 @@ module.exports = function(port, middleware, callback) {
         var todo = req.body;
         todo.id = latestId.toString();
         latestId++;
+        todo.isComplete = false;
         todos.push(todo);
         res.set("Location", "/api/todo/" + todo.id);
         res.sendStatus(201);

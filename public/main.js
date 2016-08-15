@@ -38,7 +38,7 @@ function deleteTodo(id, callback) {
         } else {
             error.textContent = "Failed to delete item. Server returned " + this.status + "-" + this.responseText;
         }
-    }
+    };
     createRequest.send();
 }
 

@@ -36,7 +36,7 @@ function deleteTodo(id, callback) {
         if (this.status === 200) {
             callback();
         } else {
-            error.textContent = "Failed to delete item. Server returned " + this.status + "-" + this.responseText;
+            error.textContent = "Failed to delete item. Server returned " + this.status + " - " + this.responseText;
         }
     };
     createRequest.send();
@@ -68,6 +68,7 @@ function reloadTodoList() {
             button.onclick = function(event) { deleteTodo(todo.id, reloadTodoList); };
             button.innerHTML = "Delete";
             button.classList.add("deleteButton");
+            button.setAttribute("data-id", todo.id.toString());
             listItem.textContent = todo.title;
             listItem.appendChild(button);
             todoList.appendChild(listItem);

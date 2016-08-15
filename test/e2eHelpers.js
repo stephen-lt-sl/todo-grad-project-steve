@@ -103,4 +103,9 @@ module.exports.setupErrorRoute = function(action, route) {
             res.sendStatus(500);
         });
     }
+    if (action === "put") {
+        router.put(route, function(req, res) {
+            res.sendStatus(500);
+        });
+    }
 };

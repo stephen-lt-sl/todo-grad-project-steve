@@ -29,6 +29,27 @@ module.exports = function(port, middleware, callback) {
         res.json(todos);
     });
 
+    // Update
+    app.put("/api/todo/:id", function(req, res) {
+        var id = req.params.id;
+        var updateTodo = req.body;
+        if (updateTodo.id && updateTodo.id !== id) {
+            res.sendStatus(500);
+            return;
+        }
+        var updateIndex = _.findIndex(todos, function(todo) {
+            return todo.id === id;
+        });
+        if (updateIndex >= 0) {
+            for (var prop in updateTodo) {
+                todos[updateIndex][prop] = updateTodo[prop];
+            }
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(404);
+        }
+    });
+
     // Delete
     app.delete("/api/todo/:id", function(req, res) {
         var id = req.params.id;

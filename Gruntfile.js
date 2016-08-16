@@ -87,6 +87,20 @@ module.exports = function(grunt) {
         });
     });
 
+    grunt.registerTask("serve", "Task that runs the server.", function () {
+        var done = this.async();
+        var cmd = process.execPath;
+        grunt.util.spawn({
+            cmd: cmd,
+            args: ["server.js"]
+        }, function(err) {
+            if (err) {
+                return done(err);
+            }
+            done();
+        });
+    });
+
     grunt.registerTask("check", ["jshint", "jscs"]);
     grunt.registerTask("test", ["check", "mochaTest:test", "mocha_istanbul:test", "istanbul_report",
         "istanbul_check_coverage"]);

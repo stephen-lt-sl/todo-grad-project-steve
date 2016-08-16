@@ -164,4 +164,33 @@ testing.describe("end to end", function() {
             });
         });
     });
+    testing.describe("on clear completed items", function() {
+        testing.it("completed item removed from list", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("0");
+            });
+            helpers.getTodoList().then(function(elements) {
+                helpers.clearCompleted();
+            });
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 0);
+            });
+        });
+        testing.it("uncompleted item remains in list", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.addTodo("Newer todo item");
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("0");
+            });
+            helpers.getTodoList().then(function(elements) {
+                helpers.clearCompleted();
+            });
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+        });
+    });
 });

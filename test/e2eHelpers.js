@@ -91,6 +91,10 @@ module.exports.completeTodo = function(id) {
     driver.findElement(webdriver.By.id("completeButton-" + id.toString())).click();
 };
 
+module.exports.clearCompleted = function(id) {
+    driver.findElement(webdriver.By.id("clear-complete-button")).click();
+};
+
 module.exports.setupErrorRoute = function(action, route) {
     if (action === "get") {
         router.get(route, function(req, res) {

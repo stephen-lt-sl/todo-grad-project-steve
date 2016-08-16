@@ -21,8 +21,10 @@ testing.describe("end to end", function() {
         });
         testing.it("displays uncompleted TODO item count", function() {
             helpers.navigateToSite();
-            helpers.getCountLabelText().then(function(text) {
-                assert.equal(text, "0 items remaining.");
+            helpers.getTodoList().then(function(elements) {
+                helpers.getCountLabelText().then(function(text) {
+                    assert.equal(text, "0 items remaining.");
+                });
             });
         });
         testing.it("displays empty TODO list", function() {

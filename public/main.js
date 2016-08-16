@@ -6,6 +6,38 @@ var error = document.getElementById("error");
 var countLabel = document.getElementById("count-label");
 var clearCompleteButton = document.getElementById("clear-complete-button");
 
+// Filters for items within the todo list; may not be combined
+var listFilters = {
+    // Shows all items
+    "all": function(item) {
+        return true;
+    },
+    // Shows only incomplete items
+    "active": function(item) {
+        return !item.isComplete;
+    },
+    // Shows only complete items
+    "completed": function(item) {
+        return item.isComplete;
+    }
+};
+// The list filter currently being used, shows "all" by default
+var currentFilter = "all";
+
+// Set up filter buttons
+document.getElementById("filter-all").onclick = function(){
+    currentFilter = "all";
+    reloadTodoList();
+};
+document.getElementById("filter-active").onclick = function(){
+    currentFilter = "active";
+    reloadTodoList();
+};
+document.getElementById("filter-completed").onclick = function(){
+    currentFilter = "completed";
+    reloadTodoList();
+};
+
 form.onsubmit = function(event) {
     var title = todoTitle.value;
     createTodo(title, function() {
@@ -90,7 +122,8 @@ function reloadTodoList() {
     todoListPlaceholder.style.display = "block";
     getTodoList(function(todos) {
         todoListPlaceholder.style.display = "none";
-        todos.forEach(function(todo) {
+        var filteredTodos = todos.filter(listFilters[currentFilter]);
+        filteredTodos.forEach(function(todo) {
             var listItem = document.createElement("li");
             var completeButton = makeListButton("Complete", "completeButton", todo.id, function(event) {
                 completeTodo(todo.id, reloadTodoList);

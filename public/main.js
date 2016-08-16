@@ -72,6 +72,16 @@ function getTodoList(callback) {
     createRequest.send();
 }
 
+function makeListButton(text, classType, id, onclick) {
+    var button = document.createElement("button");
+    button.onclick = onclick;
+    button.innerHTML = text;
+    button.classList.add("button", classType);
+    button.setAttribute("data-id", id.toString());
+    button.setAttribute("id", classType + "-" + id.toString());
+    return button;
+}
+
 function reloadTodoList() {
     while (todoList.firstChild) {
         todoList.removeChild(todoList.firstChild);
@@ -81,21 +91,15 @@ function reloadTodoList() {
         todoListPlaceholder.style.display = "none";
         todos.forEach(function(todo) {
             var listItem = document.createElement("li");
-            var compButton = document.createElement("button");
-            compButton.onclick = function(event) { completeTodo(todo.id, reloadTodoList); };
-            compButton.innerHTML = "Complete";
-            compButton.classList.add("button", "completeButton");
-            compButton.setAttribute("data-id", todo.id.toString());
-            compButton.setAttribute("id", "completeButton-" + todo.id.toString());
-            var delButton = document.createElement("button");
-            delButton.onclick = function(event) { deleteTodo(todo.id, reloadTodoList); };
-            delButton.innerHTML = "Delete";
-            delButton.classList.add("button", "deleteButton");
-            delButton.setAttribute("data-id", todo.id.toString());
-            delButton.setAttribute("id", "deleteButton-" + todo.id.toString());
+            var completeButton = makeListButton("Complete", "completeButton", todo.id, function(event) {
+                completeTodo(todo.id, reloadTodoList);
+            });
+            var deleteButton = makeListButton("Delete", "deleteButton", todo.id, function(event) {
+                deleteTodo(todo.id, reloadTodoList);
+            });
             listItem.textContent = todo.title;
-            listItem.appendChild(compButton);
-            listItem.appendChild(delButton);
+            listItem.appendChild(completeButton);
+            listItem.appendChild(deleteButton);
             listItem.classList.toggle("completedTodoItem", todo.isComplete);
             todoList.appendChild(listItem);
         });

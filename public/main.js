@@ -3,6 +3,7 @@ var todoListPlaceholder = document.getElementById("todo-list-placeholder");
 var form = document.getElementById("todo-form");
 var todoTitle = document.getElementById("new-todo");
 var error = document.getElementById("error");
+var countLabel = document.getElementById("count-label");
 
 form.onsubmit = function(event) {
     var title = todoTitle.value;
@@ -96,6 +97,12 @@ function reloadTodoList() {
             listItem.classList.toggle("completedTodoItem", todo.isComplete);
             todoList.appendChild(listItem);
         });
+        var remainingItems = todos.reduce(function(prev, curr) {
+            return prev + (curr.isComplete ? 0 : 1);
+        }, 0);
+        countLabel.textContent = (
+            remainingItems.toString() +
+            " item" + (remainingItems === 1 ? "" : "s") + " remaining.");
     });
 }
 

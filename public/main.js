@@ -83,7 +83,13 @@ function makeListButton(text, classType, id, onclick) {
     return button;
 }
 
+// Update every 10 seconds
+var todoListRefreshRate = 4 * 1000;
+var todoListRefreshTimerId = null;
+
 function reloadTodoList() {
+    clearTimeout(todoListRefreshTimerId);
+    console.log("Updating from server");
     while (todoList.firstChild) {
         todoList.removeChild(todoList.firstChild);
     }
@@ -124,13 +130,8 @@ function reloadTodoList() {
         } else {
             clearCompleteButton.style.visibility = "hidden";
         }
+        todoListRefreshTimerId = setTimeout(reloadTodoList, todoListRefreshRate);
     });
 }
 
-var repeatReloadTodoList = function(delay) {
-    reloadTodoList();
-    console.log("Polling server");
-    setTimeout(repeatReloadTodoList.bind(null, delay), delay);
-};
-
-repeatReloadTodoList(10 * 1000);
+reloadTodoList();

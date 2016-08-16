@@ -86,11 +86,13 @@ function reloadTodoList() {
             compButton.innerHTML = "Complete";
             compButton.classList.add("button", "completeButton");
             compButton.setAttribute("data-id", todo.id.toString());
+            compButton.setAttribute("id", "completeButton-" + todo.id.toString());
             var delButton = document.createElement("button");
             delButton.onclick = function(event) { deleteTodo(todo.id, reloadTodoList); };
             delButton.innerHTML = "Delete";
             delButton.classList.add("button", "deleteButton");
             delButton.setAttribute("data-id", todo.id.toString());
+            delButton.setAttribute("id", "deleteButton-" + todo.id.toString());
             listItem.textContent = todo.title;
             listItem.appendChild(compButton);
             listItem.appendChild(delButton);

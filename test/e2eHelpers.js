@@ -84,11 +84,11 @@ module.exports.addTodo = function(text) {
 };
 
 module.exports.deleteTodo = function(id) {
-    driver.findElement(webdriver.By.css("[class=deleteButton][data-id='" + id + "']")).click();
+    driver.findElement(webdriver.By.id("deleteButton-" + id.toString())).click();
 };
 
 module.exports.completeTodo = function(id) {
-    driver.findElement(webdriver.By.css("[class=completeButton][data-id='" + id + "']")).click();
+    driver.findElement(webdriver.By.id("completeButton-" + id.toString())).click();
 };
 
 module.exports.setupErrorRoute = function(action, route) {

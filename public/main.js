@@ -109,13 +109,11 @@ function reloadTodoList() {
             var completedItems = todos.filter(function(curr) { return curr.isComplete; });
             clearCompleteButton.style.visibility = "visible";
             clearCompleteButton.onclick = function(event) {
-                for (var itemIdx = 0; itemIdx < completedItems.length; itemIdx++) {
-                    if (itemIdx === completedItems.length - 1) {
-                        deleteTodo(completedItems[itemIdx].id, reloadTodoList);
-                    } else {
-                        deleteTodo(completedItems[itemIdx].id, function() { return; });
-                    }
-                }
+                completedItems.forEach(function(item, itemIdx) {
+                    deleteTodo(item.id,
+                        (itemIdx === completedItems.length - 1 ? reloadTodoList : function() { return; })
+                    );
+                });
             };
         } else {
             clearCompleteButton.style.visibility = "hidden";

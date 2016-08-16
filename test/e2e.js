@@ -19,6 +19,12 @@ testing.describe("end to end", function() {
                 assert.equal(text, "TODO List");
             });
         });
+        testing.it("displays uncompleted TODO item count", function() {
+            helpers.navigateToSite();
+            helpers.getCountLabelText().then(function(text) {
+                assert.equal(text, "0 items remaining.");
+            });
+        });
         testing.it("displays empty TODO list", function() {
             helpers.navigateToSite();
             helpers.getTodoList().then(function(elements) {
@@ -62,6 +68,15 @@ testing.describe("end to end", function() {
             helpers.addTodo("Another new todo item");
             helpers.getTodoList().then(function(elements) {
                 assert.equal(elements.length, 2);
+            });
+        });
+        testing.it("increments uncompleted TODO item count", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.getTodoList().then(function(elements) {
+                helpers.getCountLabelText().then(function(text) {
+                    assert.equal(text, "1 item remaining.");
+                });
             });
         });
     });
@@ -133,6 +148,18 @@ testing.describe("end to end", function() {
             helpers.getTodoList().then(function(elements) {
                 elements[0].getAttribute("class").then(function(classes) {
                     assert.isTrue(classes.split(" ").indexOf("completedTodoItem") > -1);
+                });
+            });
+        });
+        testing.it("decrements uncompleted TODO item count", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("0");
+            });
+            helpers.getTodoList().then(function(elements) {
+                helpers.getCountLabelText().then(function(text) {
+                    assert.equal(text, "0 items remaining.");
                 });
             });
         });

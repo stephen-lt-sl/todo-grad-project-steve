@@ -84,12 +84,12 @@ function reloadTodoList() {
             var compButton = document.createElement("button");
             compButton.onclick = function(event) { completeTodo(todo.id, reloadTodoList); };
             compButton.innerHTML = "Complete";
-            compButton.classList.add("completeButton");
+            compButton.classList.add("button", "completeButton");
             compButton.setAttribute("data-id", todo.id.toString());
             var delButton = document.createElement("button");
             delButton.onclick = function(event) { deleteTodo(todo.id, reloadTodoList); };
             delButton.innerHTML = "Delete";
-            delButton.classList.add("deleteButton");
+            delButton.classList.add("button", "deleteButton");
             delButton.setAttribute("data-id", todo.id.toString());
             listItem.textContent = todo.title;
             listItem.appendChild(compButton);

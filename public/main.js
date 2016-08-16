@@ -27,7 +27,6 @@ var currentFilter = "all";
 
 // Create the list of filter buttons and add them to the page
 var filterButtons = Object.keys(listFilters).map(function(key) {
-    console.log("Making button for " + key);
     var filterButton = document.createElement("button");
     filterButton.onclick = function() {
         currentFilter = key;

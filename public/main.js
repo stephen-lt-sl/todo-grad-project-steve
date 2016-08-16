@@ -127,4 +127,10 @@ function reloadTodoList() {
     });
 }
 
-reloadTodoList();
+var repeatReloadTodoList = function(delay) {
+    reloadTodoList();
+    console.log("Polling server");
+    setTimeout(repeatReloadTodoList.bind(null, delay), delay);
+};
+
+repeatReloadTodoList(10 * 1000);

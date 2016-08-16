@@ -39,5 +39,6 @@ h1 {
 }
 
 .button {
-
+    border-radius: 8px;
+    box-shadow: 2px 1px 1px 0px #444;
 }

@@ -58,6 +58,10 @@ module.exports.getTitleText = function() {
     return driver.findElement(webdriver.By.css("h1")).getText();
 };
 
+module.exports.getCountLabelText = function() {
+    return driver.findElement(webdriver.By.id("count-label")).getText();
+};
+
 module.exports.getInputText = function() {
     return driver.findElement(webdriver.By.id("new-todo")).getAttribute("value");
 };

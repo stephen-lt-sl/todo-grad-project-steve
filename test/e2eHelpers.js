@@ -95,6 +95,10 @@ module.exports.clearCompleted = function(id) {
     driver.findElement(webdriver.By.id("clear-complete-button")).click();
 };
 
+module.exports.setListFilter = function(filterType) {
+    driver.findElement(webdriver.By.id("filter-" + filterType)).click();
+};
+
 module.exports.setupErrorRoute = function(action, route) {
     if (action === "get") {
         router.get(route, function(req, res) {

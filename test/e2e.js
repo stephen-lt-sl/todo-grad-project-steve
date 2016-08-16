@@ -193,4 +193,54 @@ testing.describe("end to end", function() {
             });
         });
     });
+    testing.describe("on select filter", function() {
+        testing.it("all filter does not affect list", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.addTodo("Newer todo item");
+            helpers.addTodo("Newest todo item");
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("0");
+            });
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("1");
+            });
+            helpers.setListFilter("all");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 3);
+            });
+        });
+        testing.it("active filter shows only incomplete items", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.addTodo("Newer todo item");
+            helpers.addTodo("Newest todo item");
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("0");
+            });
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("1");
+            });
+            helpers.setListFilter("active");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+        });
+        testing.it("completed filter shows only complete items", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.addTodo("Newer todo item");
+            helpers.addTodo("Newest todo item");
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("0");
+            });
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("1");
+            });
+            helpers.setListFilter("completed");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 2);
+            });
+        });
+    });
 });

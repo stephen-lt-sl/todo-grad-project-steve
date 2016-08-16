@@ -107,7 +107,7 @@ function reloadTodoList() {
             " item" + (remainingItemCount === 1 ? "" : "s") + " remaining.");
         if (completedItemCount > 0) {
             var completedItems = todos.filter(function(curr) { return curr.isComplete; });
-            clearCompleteButton.style.display = "block";
+            clearCompleteButton.style.visibility = "visible";
             clearCompleteButton.onclick = function(event) {
                 for (var ii = 0; ii < completedItems.length; ii++) {
                     if (ii === completedItems.length - 1) {
@@ -118,7 +118,7 @@ function reloadTodoList() {
                 }
             };
         } else {
-            clearCompleteButton.style.display = "none";
+            clearCompleteButton.style.visibility = "hidden";
         }
     });
 }

@@ -5,6 +5,7 @@ var todoTitle = document.getElementById("new-todo");
 var error = document.getElementById("error");
 var countLabel = document.getElementById("count-label");
 var clearCompleteButton = document.getElementById("clear-complete-button");
+var filterSelector = document.getElementById("todo-filters");
 
 // Filters for items within the todo list; may not be combined
 var listFilters = {
@@ -24,19 +25,20 @@ var listFilters = {
 // The list filter currently being used, shows "all" by default
 var currentFilter = "all";
 
-// Set up filter buttons
-document.getElementById("filter-all").onclick = function(){
-    currentFilter = "all";
-    reloadTodoList();
-};
-document.getElementById("filter-active").onclick = function(){
-    currentFilter = "active";
-    reloadTodoList();
-};
-document.getElementById("filter-completed").onclick = function(){
-    currentFilter = "completed";
-    reloadTodoList();
-};
+// Create the list of filter buttons and add them to the page
+var filterButtons = Object.keys(listFilters).map(function(key) {
+    console.log("Making button for " + key);
+    var filterButton = document.createElement("button");
+    filterButton.onclick = function() {
+        currentFilter = key;
+        reloadTodoList();
+    };
+    filterButton.innerHTML = key.charAt(0).toUpperCase() + key.substring(1);
+    filterButton.classList.add("button");
+    filterButton.setAttribute("id", "filter-" + key);
+    filterSelector.appendChild(filterButton);
+    return filterButton;
+});
 
 form.onsubmit = function(event) {
     var title = todoTitle.value;

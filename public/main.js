@@ -139,15 +139,15 @@ function reloadTodoList() {
             listItem.classList.toggle("completedTodoItem", todo.isComplete);
             todoList.appendChild(listItem);
         });
-        var completedItemCount = todos.reduce(function(prev, curr) {
+        var completedItemCount = filteredTodos.reduce(function(prev, curr) {
             return prev + (curr.isComplete ? 1 : 0);
         }, 0);
-        var remainingItemCount = todos.length - completedItemCount;
+        var remainingItemCount = filteredTodos.length - completedItemCount;
         countLabel.textContent = (
             remainingItemCount.toString() +
             " item" + (remainingItemCount === 1 ? "" : "s") + " remaining.");
         if (completedItemCount > 0) {
-            var completedItems = todos.filter(function(curr) { return curr.isComplete; });
+            var completedItems = filteredTodos.filter(function(curr) { return curr.isComplete; });
             clearCompleteButton.style.visibility = "visible";
             clearCompleteButton.onclick = function(event) {
                 completedItems.forEach(function(item, itemIdx) {

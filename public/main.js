@@ -82,19 +82,19 @@ function reloadTodoList() {
         todoListPlaceholder.style.display = "none";
         todos.forEach(function(todo) {
             var listItem = document.createElement("li");
-            var compButton = document.createElement("button");
-            compButton.onclick = function(event) { completeTodo(todo.id, reloadTodoList); };
-            compButton.innerHTML = "Complete";
-            compButton.classList.add("completeButton");
-            compButton.setAttribute("data-id", todo.id.toString());
-            var delButton = document.createElement("button");
-            delButton.onclick = function(event) { deleteTodo(todo.id, reloadTodoList); };
-            delButton.innerHTML = "Delete";
-            delButton.classList.add("deleteButton");
-            delButton.setAttribute("data-id", todo.id.toString());
+            var completeButton = document.createElement("button");
+            completeButton.onclick = function(event) { completeTodo(todo.id, reloadTodoList); };
+            completeButton.innerHTML = "Complete";
+            completeButton.classList.add("completeButton");
+            completeButton.setAttribute("data-id", todo.id.toString());
+            var deleteButton = document.createElement("button");
+            deleteButton.onclick = function(event) { deleteTodo(todo.id, reloadTodoList); };
+            deleteButton.innerHTML = "Delete";
+            deleteButton.classList.add("deleteButton");
+            deleteButton.setAttribute("data-id", todo.id.toString());
             listItem.textContent = todo.title;
-            listItem.appendChild(compButton);
-            listItem.appendChild(delButton);
+            listItem.appendChild(completeButton);
+            listItem.appendChild(deleteButton);
             listItem.classList.toggle("completedTodoItem", todo.isComplete);
             todoList.appendChild(listItem);
         });
@@ -109,11 +109,11 @@ function reloadTodoList() {
             var completedItems = todos.filter(function(curr) { return curr.isComplete; });
             clearCompleteButton.style.visibility = "visible";
             clearCompleteButton.onclick = function(event) {
-                for (var ii = 0; ii < completedItems.length; ii++) {
-                    if (ii === completedItems.length - 1) {
-                        deleteTodo(completedItems[ii].id, reloadTodoList);
+                for (var itemIdx = 0; itemIdx < completedItems.length; itemIdx++) {
+                    if (itemIdx === completedItems.length - 1) {
+                        deleteTodo(completedItems[itemIdx].id, reloadTodoList);
                     } else {
-                        deleteTodo(completedItems[ii].id, function() { return; });
+                        deleteTodo(completedItems[itemIdx].id, function() { return; });
                     }
                 }
             };

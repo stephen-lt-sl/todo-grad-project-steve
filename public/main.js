@@ -4,6 +4,7 @@ var form = document.getElementById("todo-form");
 var todoTitle = document.getElementById("new-todo");
 var error = document.getElementById("error");
 var countLabel = document.getElementById("count-label");
+var clearCompleteButton = document.getElementById("clear-complete-button");
 
 form.onsubmit = function(event) {
     var title = todoTitle.value;
@@ -97,12 +98,28 @@ function reloadTodoList() {
             listItem.classList.toggle("completedTodoItem", todo.isComplete);
             todoList.appendChild(listItem);
         });
-        var remainingItems = todos.reduce(function(prev, curr) {
-            return prev + (curr.isComplete ? 0 : 1);
+        var completedItemCount = todos.reduce(function(prev, curr) {
+            return prev + (curr.isComplete ? 1 : 0);
         }, 0);
+        var remainingItemCount = todos.length - completedItemCount;
         countLabel.textContent = (
-            remainingItems.toString() +
-            " item" + (remainingItems === 1 ? "" : "s") + " remaining.");
+            remainingItemCount.toString() +
+            " item" + (remainingItemCount === 1 ? "" : "s") + " remaining.");
+        if (completedItemCount > 0) {
+            var completedItems = todos.filter(function(curr) { return curr.isComplete; });
+            clearCompleteButton.style.display = "block";
+            clearCompleteButton.onclick = function(event) {
+                for (var ii = 0; ii < completedItems.length; ii++) {
+                    if (ii === completedItems.length - 1) {
+                        deleteTodo(completedItems[ii].id, reloadTodoList);
+                    } else {
+                        deleteTodo(completedItems[ii].id, function() { return; });
+                    }
+                }
+            };
+        } else {
+            clearCompleteButton.style.display = "none";
+        }
     });
 }
 

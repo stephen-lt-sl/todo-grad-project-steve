@@ -73,6 +73,16 @@ function getTodoList(callback) {
     createRequest.send();
 }
 
+function makeListButton(text, classType, id, onclick) {
+    var button = document.createElement("button");
+    button.onclick = onclick;
+    button.innerHTML = text;
+    button.classList.add("button", classType);
+    button.setAttribute("data-id", id.toString());
+    button.setAttribute("id", classType + "-" + id.toString());
+    return button;
+}
+
 function reloadTodoList() {
     while (todoList.firstChild) {
         todoList.removeChild(todoList.firstChild);
@@ -82,16 +92,12 @@ function reloadTodoList() {
         todoListPlaceholder.style.display = "none";
         todos.forEach(function(todo) {
             var listItem = document.createElement("li");
-            var completeButton = document.createElement("button");
-            completeButton.onclick = function(event) { completeTodo(todo.id, reloadTodoList); };
-            completeButton.innerHTML = "Complete";
-            completeButton.classList.add("completeButton");
-            completeButton.setAttribute("data-id", todo.id.toString());
-            var deleteButton = document.createElement("button");
-            deleteButton.onclick = function(event) { deleteTodo(todo.id, reloadTodoList); };
-            deleteButton.innerHTML = "Delete";
-            deleteButton.classList.add("deleteButton");
-            deleteButton.setAttribute("data-id", todo.id.toString());
+            var completeButton = makeListButton("Complete", "completeButton", todo.id, function(event) {
+                completeTodo(todo.id, reloadTodoList);
+            });
+            var deleteButton = makeListButton("Delete", "deleteButton", todo.id, function(event) {
+                deleteTodo(todo.id, reloadTodoList);
+            });
             listItem.textContent = todo.title;
             listItem.appendChild(completeButton);
             listItem.appendChild(deleteButton);

@@ -83,15 +83,7 @@ function makeListButton(text, classType, id, onclick) {
     return button;
 }
 
-// Interval between list refreshes in ms
-var todoListRefreshRate = 4 * 1000;
-
-var todoListRefreshTimerId = null;
-
-// Gets the todolist from the server, displays it on the page, and sets a timer
-// to reload the todolist again once finished
 function reloadTodoList() {
-    clearTimeout(todoListRefreshTimerId);
     while (todoList.firstChild) {
         todoList.removeChild(todoList.firstChild);
     }
@@ -132,8 +124,11 @@ function reloadTodoList() {
         } else {
             clearCompleteButton.style.visibility = "hidden";
         }
-        todoListRefreshTimerId = setTimeout(reloadTodoList, todoListRefreshRate);
     });
 }
 
+// Interval between list refreshes in ms
+var todoListRefreshRate = 4 * 1000;
+
 reloadTodoList();
+setInterval(reloadTodoList, todoListRefreshRate);

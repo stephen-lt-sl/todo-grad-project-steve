@@ -25,7 +25,7 @@ var listFilters = {
 
 var currentTodoListFilter = "all";
 
-// Create the list of filter buttons and add them to the page
+// Add filters to page as buttons
 Object.keys(listFilters).forEach(function(key) {
     var filterButton = document.createElement("button");
     filterButton.onclick = function() {

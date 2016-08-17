@@ -83,6 +83,13 @@ module.exports.addTodo = function(text) {
     driver.findElement(webdriver.By.id("submit-todo")).click();
 };
 
+module.exports.addGenericTodos = function(todoCount) {
+    for (var item = 0; item < todoCount; item++) {
+        driver.findElement(webdriver.By.id("new-todo")).sendKeys("Todo item " + item.toString());
+        driver.findElement(webdriver.By.id("submit-todo")).click();
+    }
+};
+
 module.exports.deleteTodo = function(id) {
     driver.findElement(webdriver.By.id("deleteButton-" + id.toString())).click();
 };

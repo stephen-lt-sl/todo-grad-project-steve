@@ -88,9 +88,10 @@ var todoListRefreshRate = 4 * 1000;
 
 var todoListRefreshTimerId = null;
 
+// Gets the todolist from the server, displays it on the page, and sets a timer
+// to reload the todolist again once finished
 function reloadTodoList() {
     clearTimeout(todoListRefreshTimerId);
-    console.log("Updating from server");
     while (todoList.firstChild) {
         todoList.removeChild(todoList.firstChild);
     }

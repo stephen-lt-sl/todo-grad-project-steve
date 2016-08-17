@@ -83,8 +83,9 @@ function makeListButton(text, classType, id, onclick) {
     return button;
 }
 
-// Update every 10 seconds
+// Interval between list refreshes in ms
 var todoListRefreshRate = 4 * 1000;
+
 var todoListRefreshTimerId = null;
 
 function reloadTodoList() {

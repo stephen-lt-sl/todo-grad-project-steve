@@ -16,61 +16,77 @@ form.onsubmit = function(event) {
 };
 
 function createTodo(title, callback) {
-    var createRequest = new XMLHttpRequest();
-    createRequest.open("POST", "/api/todo");
-    createRequest.setRequestHeader("Content-type", "application/json");
-    createRequest.onload = function() {
-        if (this.status === 201) {
+    fetch("/api/todo", {
+        method: "POST",
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+            title: title
+        })
+    }).then(function(response) {
+        if (response.status === 201) {
             callback();
         } else {
-            error.textContent = "Failed to create item. Server returned " + this.status + " - " + this.responseText;
+            error.textContent =
+                "Failed to create item. Server returned " + response.status + " - " + response.statusText;
         }
-    };
-    createRequest.send(JSON.stringify({
-        title: title
-    }));
+    }).catch(function(ex) {
+        console.log("Fetch error :-S", ex);
+    });
 }
 
 function deleteTodo(id, callback) {
-    var createRequest = new XMLHttpRequest();
-    createRequest.open("DELETE", "/api/todo/" + id);
-    createRequest.onload = function() {
-        if (this.status === 200) {
+    fetch("/api/todo/" + id, {
+        method: "DELETE"
+    }).then(function(response) {
+        if (response.status === 200) {
             callback();
         } else {
-            error.textContent = "Failed to delete item. Server returned " + this.status + " - " + this.responseText;
+            error.textContent =
+                "Failed to delete item. Server returned " + response.status + " - " + response.statusText;
         }
-    };
-    createRequest.send();
+    }).catch(function(ex) {
+        console.log("Fetch error :-S", ex);
+    });
 }
 
 function completeTodo(id, callback) {
-    var createRequest = new XMLHttpRequest();
-    createRequest.open("PUT", "/api/todo/" + id);
-    createRequest.setRequestHeader("Content-type", "application/json");
-    createRequest.onload = function() {
-        if (this.status === 200) {
+    fetch("/api/todo/" + id, {
+        method: "PUT",
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+            isComplete: true
+        })
+    }).then(function(response) {
+        if (response.status === 200) {
             callback();
         } else {
-            error.textContent = "Failed to complete item. Server returned " + this.status + " - " + this.responseText;
+            error.textContent =
+                "Failed to complete item. Server returned " + response.status + " - " + response.statusText;
         }
-    };
-    createRequest.send(JSON.stringify({
-        isComplete: true
-    }));
+    }).catch(function(ex) {
+        console.log("Fetch error :-S", ex);
+    });
 }
 
 function getTodoList(callback) {
-    var createRequest = new XMLHttpRequest();
-    createRequest.open("GET", "/api/todo");
-    createRequest.onload = function() {
-        if (this.status === 200) {
-            callback(JSON.parse(this.responseText));
+    fetch("/api/todo", {
+        method: "GET"
+    }).then(function(response) {
+        if (response.status === 200) {
+            response.json().then(function(data) {
+                callback(data);
+            });
         } else {
-            error.textContent = "Failed to get list. Server returned " + this.status + " - " + this.responseText;
+            error.textContent =
+                "Failed to get list. Server returned " + response.status + " - " + response.statusText;
         }
-    };
-    createRequest.send();
+    }).catch(function(ex) {
+        console.log("Fetch error :-S", ex);
+    });
 }
 
 function makeListButton(text, classType, id, onclick) {

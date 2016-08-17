@@ -22,14 +22,14 @@ var listFilters = {
         return item.isComplete;
     }
 };
-// The list filter currently being used, shows "all" by default
-var currentFilter = "all";
+
+var currentTodoListFilter = "all";
 
 // Create the list of filter buttons and add them to the page
-var filterButtons = Object.keys(listFilters).map(function(key) {
+Object.keys(listFilters).forEach(function(key) {
     var filterButton = document.createElement("button");
     filterButton.onclick = function() {
-        currentFilter = key;
+        currentTodoListFilter = key;
         reloadTodoList();
     };
     filterButton.innerHTML = key.charAt(0).toUpperCase() + key.substring(1);
@@ -123,7 +123,7 @@ function reloadTodoList() {
     todoListPlaceholder.style.display = "block";
     getTodoList(function(todos) {
         todoListPlaceholder.style.display = "none";
-        var filteredTodos = todos.filter(listFilters[currentFilter]);
+        var filteredTodos = todos.filter(listFilters[currentTodoListFilter]);
         filteredTodos.forEach(function(todo) {
             var listItem = document.createElement("li");
             var completeButton = makeListButton("Complete", "completeButton", todo.id, function(event) {

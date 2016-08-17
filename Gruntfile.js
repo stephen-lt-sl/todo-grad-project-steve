@@ -104,7 +104,7 @@ module.exports = function(grunt) {
         });
     });
 
-    grunt.registerTask("watch", "Task that runs the server.", function () {
+    grunt.registerTask("watch", "Task that runs the server and restarts it if server files are changed.", function () {
         var done = this.async();
         var cmd = process.execPath;
         var restartOnNextDeath = false;

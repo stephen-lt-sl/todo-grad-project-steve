@@ -3,28 +3,35 @@
     <head>
         <meta charset="utf-8">
         <title>TODO List</title>
-        <link href="main.css" rel="stylesheet" type="text/css">
+        <link href="app.css" rel="stylesheet" type="text/css">
         <link rel="icon" type="image/ico" href="favicon.ico">
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+        <script type="text/javascript" src="app.js"></script>
+        <script type="text/javascript" src="controllers/todoList.controller.js"></script>
+        <script type="text/javascript" src="services/todoListData.service.js"></script>
     </head>
     <body>
         <header>
             <h1>TODO List</h1>
         </header>
-        <div id="count-label"></div>
-        <button id="clear-complete-button">Clear completed</button>
-        <section>
-            <h2 id="todo-list-placeholder">Loading...</h2>
-            <ul id="todo-list"></ul>
-            <form id="todo-form">
-                <input id="new-todo" placeholder="What needs to be done?" autofocus>
-                <input id="submit-todo" type="submit" value="Create" class="button">
-            </form>
-            <div id="todo-filters">
-                Show:
-            </div>
-            <div id="error"></div>
-        </section>
-        <script type="text/javascript" src="https://rawgit.com/github/fetch/master/fetch.js"></script>
-        <script type="text/javascript" src="main.js"></script>
+        <div ng-app="todoListApp" ng-controller="TodoListController as todoListVm">
+            <div id="count-label">{{todoListVm.remainingItemCount()}} item{{todoListVm.remainingItemCount() === 1 ? "" : "s"}} remaining.</div>
+            <button id="clear-complete-button">Clear completed</button>
+            <section>
+                <ul id="todo-list">
+                    <li ng-repeat="todo in todoListVm.filteredTodos">
+                        <span ng-class="{completedTodoItem: todo.isComplete}">{{todo.title}}</span>
+                        <button ng-click="todoListVm.completeTodo(todo.id)" class="button completeButton">Complete</button>
+                        <button ng-click="todoListVm.deleteTodo(todo.id)" class="button deleteButton">Delete</button>
+                    </li>
+                </ul>
+                <form id="todo-form" ng-submit="todoListVm.createTodo()">
+                    <input id="new-todo" ng-model="todoListVm.todoEntryText" placeholder="What needs to be done?" autofocus>
+                    <input id="submit-todo" type="submit" value="Create" class="button">
+                </form>
+                <div id="error">{{todoListVm.errorText}}</div>
+            </section>
+        </div>
     </body>
 </html>

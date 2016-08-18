@@ -16,21 +16,31 @@
             <h1>TODO List</h1>
         </header>
         <div ng-app="todoListApp" ng-controller="TodoListController as todoListVm">
-            <div id="count-label">{{todoListVm.remainingItemCount()}} item{{todoListVm.remainingItemCount() === 1 ? "" : "s"}} remaining.</div>
-            <button id="clear-complete-button">Clear completed</button>
-            <section>
-                <ul id="todo-list">
-                    <li ng-repeat="todo in todoListVm.filteredTodos">
-                        <span ng-class="{completedTodoItem: todo.isComplete}">{{todo.title}}</span>
-                        <button ng-click="todoListVm.completeTodo(todo.id)" class="button completeButton">Complete</button>
-                        <button ng-click="todoListVm.deleteTodo(todo.id)" class="button deleteButton">Delete</button>
-                    </li>
-                </ul>
+            <div style="float:left; margin:30px">
+                <span id="count-label">{{todoListVm.remainingItemCount()}} item{{todoListVm.remainingItemCount() === 1 ? "" : "s"}} remaining.</span>
+                <br>
+                <button id="clear-complete-button" ng-click="todoListVm.clearCompleted()" class="button">Clear completed</button>
+            </div>
+            <section style="float:left; margin:30px">
+                <div id="statusText" ng-class="{updatedText: !todoListVm.updated}">
+                    Updated!
+                </div>
                 <form id="todo-form" ng-submit="todoListVm.createTodo()">
                     <input id="new-todo" ng-model="todoListVm.todoEntryText" placeholder="What needs to be done?" autofocus>
                     <input id="submit-todo" type="submit" value="Create" class="button">
                 </form>
+                <button ng-repeat="filter in todoListVm.getFilters()"
+                    ng-click="todoListVm.currentFilter = filter"
+                    ng-class="{selectedFilter: filter === todoListVm.currentFilter}"
+                    class="button">{{todoListVm.filters[filter].name}}</button>
                 <div id="error">{{todoListVm.errorText}}</div>
+                <ul id="todo-list">
+                    <li ng-repeat="todo in todoListVm.filteredTodos()" ng-attr-id="{{'todoItem-' + todo.id}}">
+                        <span ng-class="{completedTodoItem: todo.isComplete}">{{todo.title}}</span>
+                        <button ng-attr-id="{{'completeButton-' + todo.id}}" ng-click="todoListVm.completeTodo(todo.id)" class="button completeButton">Complete</button>
+                        <button ng-attr-id="{{'deleteButton-' + todo.id}}" ng-click="todoListVm.deleteTodo(todo.id)" class="button deleteButton">Delete</button>
+                    </li>
+                </ul>
             </section>
         </div>
     </body>

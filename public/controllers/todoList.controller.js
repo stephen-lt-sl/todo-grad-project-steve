@@ -8,6 +8,7 @@
     TodoListController.$inject = ["todoListDataService"];
 
     function TodoListController(todoListDataService) {
+        /* jshint validthis: true */
         var vm = this;
 
         vm.todos = [];
@@ -80,7 +81,7 @@
 
         function completeTodo(id) {
             todoListDataService.updateTodo(id, {
-                    isComplete: true
+                isComplete: true
             }).then(function(response) {
                 if (response.status === 200) {
                     reloadTodoList();

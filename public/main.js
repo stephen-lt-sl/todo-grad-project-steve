@@ -143,4 +143,8 @@ function reloadTodoList() {
     });
 }
 
+// Interval between list refreshes in ms
+var todoListRefreshRate = 4 * 1000;
+
 reloadTodoList();
+setInterval(reloadTodoList, todoListRefreshRate);

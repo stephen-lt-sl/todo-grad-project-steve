@@ -23,9 +23,12 @@ module.exports.setupDriver = function() {
 module.exports.setupServer = function(done) {
     router = express.Router();
     if (gatheringCoverage) {
-        router.get("/main.js", function(req, res) {
-            var absPath = path.join(__dirname, "..", "public", "main.js");
-            res.send(instrumenter.instrumentSync(fs.readFileSync("public/main.js", "utf8"), absPath));
+        var coveredFiles = ["app.js", "controllers/todoList.controller.js", "services/todoListData.service.js"];
+        coveredFiles.forEach(function(filename) {
+            router.get("/" + filename, function(req, res) {
+                var absPath = path.join(__dirname, "..", "public", filename);
+                res.send(instrumenter.instrumentSync(fs.readFileSync("public/" + filename, "utf8"), absPath));
+            });
         });
     }
     server = createServer(testPort, router, done);
@@ -73,8 +76,8 @@ module.exports.getErrorText = function() {
 };
 
 module.exports.getTodoList = function() {
-    var todoListPlaceholder = driver.findElement(webdriver.By.id("todo-list-placeholder"));
-    driver.wait(webdriver.until.elementIsNotVisible(todoListPlaceholder), 5000);
+    var statusText = driver.findElement(webdriver.By.id("statusText"));
+    driver.wait(webdriver.until.elementIsVisible(statusText), 5000);
     return driver.findElements(webdriver.By.css("#todo-list li"));
 };
 
@@ -104,6 +107,18 @@ module.exports.clearCompleted = function(id) {
 
 module.exports.setListFilter = function(filterType) {
     driver.findElement(webdriver.By.id("filter-" + filterType)).click();
+};
+
+module.exports.isCompleted = function(id) {
+    return module.exports.getTodoList().then(function(elements) {
+        return driver
+            .findElement(webdriver.By.id("todoItem-" + id))
+            .findElement(webdriver.By.className("completedTodoItem"));
+    }).then(function(element) {
+        return true;
+    }, function(element) {
+        return false;
+    });
 };
 
 module.exports.setupErrorRoute = function(action, route) {

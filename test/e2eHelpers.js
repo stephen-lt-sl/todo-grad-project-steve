@@ -83,6 +83,13 @@ module.exports.addTodo = function(text) {
     driver.findElement(webdriver.By.id("submit-todo")).click();
 };
 
+module.exports.addGenericTodos = function(todoCount) {
+    for (var item = 0; item < todoCount; item++) {
+        driver.findElement(webdriver.By.id("new-todo")).sendKeys("Todo item " + item.toString());
+        driver.findElement(webdriver.By.id("submit-todo")).click();
+    }
+};
+
 module.exports.deleteTodo = function(id) {
     driver.findElement(webdriver.By.id("deleteButton-" + id.toString())).click();
 };
@@ -93,6 +100,10 @@ module.exports.completeTodo = function(id) {
 
 module.exports.clearCompleted = function(id) {
     driver.findElement(webdriver.By.id("clear-complete-button")).click();
+};
+
+module.exports.setListFilter = function(filterType) {
+    driver.findElement(webdriver.By.id("filter-" + filterType)).click();
 };
 
 module.exports.setupErrorRoute = function(action, route) {

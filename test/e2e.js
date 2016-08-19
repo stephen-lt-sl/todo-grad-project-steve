@@ -44,14 +44,14 @@ testing.describe("end to end", function() {
     testing.describe("on create todo item", function() {
         testing.it("clears the input field", function() {
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
+            helpers.addGenericTodos(1);
             helpers.getInputText().then(function(value) {
                 assert.equal(value, "");
             });
         });
         testing.it("adds the todo item to the list", function() {
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
+            helpers.addGenericTodos(1);
             helpers.getTodoList().then(function(elements) {
                 assert.equal(elements.length, 1);
             });
@@ -59,22 +59,21 @@ testing.describe("end to end", function() {
         testing.it("displays an error if the request fails", function() {
             helpers.setupErrorRoute("post", "/api/todo");
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
+            helpers.addGenericTodos(1);
             helpers.getErrorText().then(function(text) {
                 assert.equal(text, "Failed to create item. Server returned 500 - Internal Server Error");
             });
         });
         testing.it("can be done multiple times", function() {
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
-            helpers.addTodo("Another new todo item");
+            helpers.addGenericTodos(2);
             helpers.getTodoList().then(function(elements) {
                 assert.equal(elements.length, 2);
             });
         });
         testing.it("increments uncompleted TODO item count", function() {
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
+            helpers.addGenericTodos(1);
             helpers.getTodoList().then(function(elements) {
                 helpers.getCountLabelText().then(function(text) {
                     assert.equal(text, "1 item remaining.");
@@ -85,7 +84,7 @@ testing.describe("end to end", function() {
     testing.describe("on delete todo item", function() {
         testing.it("removes an item", function() {
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
+            helpers.addGenericTodos(1);
             helpers.getTodoList().then(function(elements) {
                 helpers.deleteTodo("0");
             });
@@ -96,7 +95,7 @@ testing.describe("end to end", function() {
         testing.it("displays an error if the request fails", function() {
             helpers.setupErrorRoute("delete", "/api/todo/*");
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
+            helpers.addGenericTodos(1);
             helpers.getTodoList().then(function(elements) {
                 helpers.deleteTodo("0");
             });
@@ -106,8 +105,7 @@ testing.describe("end to end", function() {
         });
         testing.it("can be done multiple times", function() {
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
-            helpers.addTodo("Another new todo item");
+            helpers.addGenericTodos(2);
             helpers.getTodoList().then(function(elements) {
                 helpers.deleteTodo("0");
             });
@@ -122,7 +120,7 @@ testing.describe("end to end", function() {
     testing.describe("on complete todo item", function() {
         testing.it("item remains in list", function() {
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
+            helpers.addGenericTodos(1);
             helpers.getTodoList().then(function(elements) {
                 helpers.completeTodo("0");
             });
@@ -133,7 +131,7 @@ testing.describe("end to end", function() {
         testing.it("displays an error if the request fails", function() {
             helpers.setupErrorRoute("put", "/api/todo/*");
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
+            helpers.addGenericTodos(1);
             helpers.getTodoList().then(function(elements) {
                 helpers.completeTodo("0");
             });
@@ -143,7 +141,7 @@ testing.describe("end to end", function() {
         });
         testing.it("changes style of completed list item", function() {
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
+            helpers.addGenericTodos(1);
             helpers.getTodoList().then(function(elements) {
                 helpers.completeTodo("0");
             });
@@ -155,7 +153,7 @@ testing.describe("end to end", function() {
         });
         testing.it("decrements uncompleted TODO item count", function() {
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
+            helpers.addGenericTodos(1);
             helpers.getTodoList().then(function(elements) {
                 helpers.completeTodo("0");
             });
@@ -169,7 +167,7 @@ testing.describe("end to end", function() {
     testing.describe("on clear completed items", function() {
         testing.it("completed item removed from list", function() {
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
+            helpers.addGenericTodos(1);
             helpers.getTodoList().then(function(elements) {
                 helpers.completeTodo("0");
             });
@@ -182,8 +180,7 @@ testing.describe("end to end", function() {
         });
         testing.it("uncompleted item remains in list", function() {
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
-            helpers.addTodo("Newer todo item");
+            helpers.addGenericTodos(2);
             helpers.getTodoList().then(function(elements) {
                 helpers.completeTodo("0");
             });
@@ -192,6 +189,50 @@ testing.describe("end to end", function() {
             });
             helpers.getTodoList().then(function(elements) {
                 assert.equal(elements.length, 1);
+            });
+        });
+    });
+    testing.describe("on select filter", function() {
+        testing.it("all filter does not affect list", function() {
+            helpers.navigateToSite();
+            helpers.addGenericTodos(3);
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("0");
+            });
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("1");
+            });
+            helpers.setListFilter("all");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 3);
+            });
+        });
+        testing.it("active filter shows only incomplete items", function() {
+            helpers.navigateToSite();
+            helpers.addGenericTodos(3);
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("0");
+            });
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("1");
+            });
+            helpers.setListFilter("active");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+        });
+        testing.it("completed filter shows only complete items", function() {
+            helpers.navigateToSite();
+            helpers.addGenericTodos(3);
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("0");
+            });
+            helpers.getTodoList().then(function(elements) {
+                helpers.completeTodo("1");
+            });
+            helpers.setListFilter("completed");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 2);
             });
         });
     });

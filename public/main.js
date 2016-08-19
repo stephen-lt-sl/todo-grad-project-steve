@@ -5,6 +5,39 @@ var todoTitle = document.getElementById("new-todo");
 var error = document.getElementById("error");
 var countLabel = document.getElementById("count-label");
 var clearCompleteButton = document.getElementById("clear-complete-button");
+var filterSelector = document.getElementById("todo-filters");
+
+// Filters for items within the todo list; may not be combined
+var listFilters = {
+    // Shows all items
+    "all": function(item) {
+        return true;
+    },
+    // Shows only incomplete items
+    "active": function(item) {
+        return !item.isComplete;
+    },
+    // Shows only complete items
+    "completed": function(item) {
+        return item.isComplete;
+    }
+};
+
+var currentTodoListFilter = "all";
+
+// Add filters to page as buttons
+Object.keys(listFilters).forEach(function(key) {
+    var filterButton = document.createElement("button");
+    filterButton.onclick = function() {
+        currentTodoListFilter = key;
+        reloadTodoList();
+    };
+    filterButton.innerHTML = key.charAt(0).toUpperCase() + key.substring(1);
+    filterButton.classList.add("button");
+    filterButton.setAttribute("id", "filter-" + key);
+    filterSelector.appendChild(filterButton);
+    return filterButton;
+});
 
 form.onsubmit = function(event) {
     var title = todoTitle.value;
@@ -106,7 +139,8 @@ function reloadTodoList() {
     todoListPlaceholder.style.display = "block";
     getTodoList(function(todos) {
         todoListPlaceholder.style.display = "none";
-        todos.forEach(function(todo) {
+        var filteredTodos = todos.filter(listFilters[currentTodoListFilter]);
+        filteredTodos.forEach(function(todo) {
             var listItem = document.createElement("li");
             var completeButton = makeListButton("Complete", "completeButton", todo.id, function(event) {
                 completeTodo(todo.id, reloadTodoList);
@@ -120,15 +154,15 @@ function reloadTodoList() {
             listItem.classList.toggle("completedTodoItem", todo.isComplete);
             todoList.appendChild(listItem);
         });
-        var completedItemCount = todos.reduce(function(prev, curr) {
+        var completedItemCount = filteredTodos.reduce(function(prev, curr) {
             return prev + (curr.isComplete ? 1 : 0);
         }, 0);
-        var remainingItemCount = todos.length - completedItemCount;
+        var remainingItemCount = filteredTodos.length - completedItemCount;
         countLabel.textContent = (
             remainingItemCount.toString() +
             " item" + (remainingItemCount === 1 ? "" : "s") + " remaining.");
         if (completedItemCount > 0) {
-            var completedItems = todos.filter(function(curr) { return curr.isComplete; });
+            var completedItems = filteredTodos.filter(function(curr) { return curr.isComplete; });
             clearCompleteButton.style.visibility = "visible";
             clearCompleteButton.onclick = function(event) {
                 completedItems.forEach(function(item, itemIdx) {

@@ -32,6 +32,7 @@
                 <button ng-repeat="filter in todoListVm.getFilters()"
                     ng-click="todoListVm.currentFilter = filter"
                     ng-class="{selectedFilter: filter === todoListVm.currentFilter}"
+                    ng-attr-id="{{'filter-' + filter}}"
                     class="button">{{todoListVm.filters[filter].name}}</button>
                 <div id="error">{{todoListVm.errorText}}</div>
                 <ul id="todo-list">

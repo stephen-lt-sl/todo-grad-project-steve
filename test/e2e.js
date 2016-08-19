@@ -139,16 +139,14 @@ testing.describe("end to end", function() {
                 assert.equal(text, "Failed to complete item. Server returned 500 - Internal Server Error");
             });
         });
-        testing.it("changes style of completed list item", function() {
+        testing.it("shows list item as completed", function() {
             helpers.navigateToSite();
             helpers.addGenericTodos(1);
             helpers.getTodoList().then(function(elements) {
                 helpers.completeTodo("0");
             });
-            helpers.getTodoList().then(function(elements) {
-                elements[0].getAttribute("class").then(function(classes) {
-                    assert.isTrue(classes.split(" ").indexOf("completedTodoItem") > -1);
-                });
+            helpers.isCompleted("0").then(function(complete) {
+                assert.isTrue(complete);
             });
         });
         testing.it("decrements uncompleted TODO item count", function() {

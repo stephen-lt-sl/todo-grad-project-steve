@@ -26,12 +26,10 @@ h1 {
 
 .deleteButton {
     background-color: rgba(255, 0, 0, 0.5);
-    font-side: 66px;
 }
 
 .completeButton {
     background-color: rgba(0, 255, 0, 0.5);
-    font-side: 66px;
 }
 
 .completedTodoItem {
@@ -41,4 +39,12 @@ h1 {
 .button {
     border-radius: 8px;
     box-shadow: 2px 1px 1px 0px #444;
+}
+
+.selectedFilter {
+    color: rgba(0, 196, 0, 1);
+}
+
+.updatedText {
+    visibility: hidden;
 }

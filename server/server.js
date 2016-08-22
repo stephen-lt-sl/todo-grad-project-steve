@@ -14,6 +14,12 @@ module.exports = function(port, middleware, callback) {
     var latestId = 0;
     var todos = [];
 
+    app.all("/*", function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "http://swagger.io");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
+
     // Create
     app.post("/api/todo", function(req, res) {
         var todo = req.body;
